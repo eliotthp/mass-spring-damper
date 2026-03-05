@@ -5,7 +5,7 @@ project(MassSpringDamper)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(sim src/main.cpp src/plant.cpp src/render.cpp src/export_data.cpp)
+add_executable(sim src/main.cpp src/plant.cpp src/export_data.cpp)
 target_include_directories(sim PRIVATE include)
 
 set(PYTHON_EXECUTABLE "${CMAKE_SOURCE_DIR}/.venv/bin/python")

@@ -2,34 +2,41 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <string>
 #include "plant.hpp"
 #include "export_data.hpp"
-#include "render.hpp"
 
 using namespace std;
 
 struct PIDController
 {
     double kp; // Proportional gain
+    double ki; // Integral gain
     double kd; // Derivative gain
 };
 
 int main(int argc, char **argv)
 {
-    double x0 = -1.0; // Default initial position (m).
-    double k = 5.0;   // Default spring constant (N/m).
-    double c = 0.7;   // Default damping coefficient (N*s/m).
-    double sp = 0.0;  // Default setpoint for control (m).
-    double kp = 0.0;  // Default proportional gain for control (N/m).
-    double kd = 0.0;  // Default derivative gain for control (N*s/m).
+    double x0 = -1.0;                           // Default initial position (m).
+    double k = 5.0;                             // Default spring constant (N/m).
+    double c = 0.7;                             // Default damping coefficient (N*s/m).
+    double sp = 0.0;                            // Default setpoint for control (m).
+    double kp = 0.0;                            // Default proportional gain for control (N/m).
+    double ki = 0.0;                            // Default integral gain for control (N*s/m).
+    double kd = 0.0;                            // Default derivative gain for control (N*s/m).
+    string output_file = "simulation_data.csv"; // Default output file for CSV data.
     // Parse CLI args
     for (int i = 1; i < argc; ++i)
     {
         string arg = argv[i];
         if (arg == "--help")
         {
-            cout << "Usage: " << argv[0] << " [--x0 <initial_position>] [--k <spring_constant>] [--c <damping_coefficient>] [--sp <setpoint>] [--kp <proportional_gain>] [--kd <derivative_gain>]" << endl;
+            cout << "Usage: " << argv[0] << " [--output <output_file>] [--x0 <initial_position>] [--k <spring_constant>] [--c <damping_coefficient>] [--sp <setpoint>] [--kp <proportional_gain>] [--ki <integral_gain>] [--kd <derivative_gain>]" << endl;
             return 0;
+        }
+        else if (arg == "--output")
+        {
+            output_file = argv[++i];
         }
         else if (arg == "--x0")
         {
@@ -51,6 +58,10 @@ int main(int argc, char **argv)
         {
             kp = stod(argv[++i]);
         }
+        else if (arg == "--ki")
+        {
+            ki = stod(argv[++i]);
+        }
         else if (arg == "--kd")
         {
             kd = stod(argv[++i]);
@@ -61,26 +72,27 @@ int main(int argc, char **argv)
 
     // Initial condition: displaced left with zero initial velocity.
     State state{0.0, x0, 0.0};
-    PIDController controller{kp, kd};
+    PIDController controller{kp, ki, kd};
 
     vector<State> states_history;
     states_history.push_back(state);
 
-    double error = sp - state.position;
-    double input_force = controller.kp * error + controller.kd * (-state.velocity); // PD control
-    // Fixed integration step for simulation (s).
     double dt = 0.01;
+    double error;
+    double error_sum = 0.0;
+    double input_force;
 
     // Run simulation for 1000 integration steps.
     for (int i = 0; i < 1000; ++i)
     {
         error = sp - state.position;
-        input_force = controller.kp * error + controller.kd * (-state.velocity); // Proportional control
+        error_sum += error * dt;
+        input_force = controller.kp * error + controller.ki * error_sum + controller.kd * (-state.velocity); // PID control
         state = plant.step(state, input_force, dt);
         states_history.push_back(state);
     }
 
-    exportData(states_history);
+    exportData(states_history, output_file);
 
     // Successful exit.
     return 0;

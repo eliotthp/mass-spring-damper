@@ -1,15 +1,28 @@
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <vector>
 #include "plant.hpp"
 #include "export_data.hpp"
 
-int exportData(const std::vector<State> &states_history)
+using namespace std;
+
+int exportData(const std::vector<State> &states_history, const std::string &output_file)
 {
-    std::ofstream outFile("../data/simulation_data.csv");
+    if (filesystem::exists("../data"))
+    {
+        cout << "Output directory already exists.\n";
+    }
+    else if (!filesystem::exists("../data"))
+    {
+        cout << "Creating output directory...\n";
+        filesystem::create_directory("../data");
+    }
+    ofstream outFile("../data/" + output_file);
+
     if (!outFile.is_open())
     {
-        std::cerr << "Error opening file for writing!\n";
+        cerr << "Error opening file for writing!\n";
         return -1;
     }
 

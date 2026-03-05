@@ -13,7 +13,7 @@ std::string render(const State &state, const Config &cfg)
     for (int i = 0; i < cfg.width; ++i)
     {
         if (i == col)
-            std::cout << "##";
+            std::cout << "o";
         else
             std::cout << "-";
     }
