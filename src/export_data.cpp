@@ -12,11 +12,11 @@ int exportData(const std::vector<State> &states_history, const std::string &outp
 {
     if (filesystem::exists("../data"))
     {
-        cout << "Output directory already exists.\n";
+        cout << "Exporting " + output_file + "\n";
     }
     else if (!filesystem::exists("../data"))
     {
-        cout << "Creating output directory...\n";
+        cout << "Creating data directory...\n";
         filesystem::create_directory("../data");
     }
     ofstream outFile("../data/" + output_file);

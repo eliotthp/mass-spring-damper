@@ -17,7 +17,7 @@ def main():
     else:
         output_files.append("simulation_data.csv")
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 6))
 
     for output_file in output_files:
         plot_results(output_file)
@@ -25,8 +25,9 @@ def main():
     plt.xlabel("Time (s)")
     plt.ylabel("Position (m)")
     plt.title("Mass-Spring-Damper Simulation Results")
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1, 1), loc='upper left')
     plt.grid(True)
+    plt.subplots_adjust(left=0.067, right=0.8)
     plt.show()
 
 if __name__ == "__main__":
