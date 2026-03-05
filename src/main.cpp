@@ -17,8 +17,8 @@ struct PIDController
 int main(int argc, char **argv)
 {
     double x0 = -1.0; // Default initial position (m).
-    double k = 10.0;  // Default spring constant (N/m).
-    double c = 0.5;   // Default damping coefficient (N*s/m).
+    double k = 5.0;   // Default spring constant (N/m).
+    double c = 0.7;   // Default damping coefficient (N*s/m).
     double sp = 0.0;  // Default setpoint for control (m).
     double kp = 0.0;  // Default proportional gain for control (N/m).
     double kd = 0.0;  // Default derivative gain for control (N*s/m).
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     // Initial condition: displaced left with zero initial velocity.
     State state{0.0, x0, 0.0};
-    PIDController controller{kp};
+    PIDController controller{kp, kd};
 
     vector<State> states_history;
     states_history.push_back(state);
