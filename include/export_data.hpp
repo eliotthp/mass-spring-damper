@@ -11,6 +11,7 @@ struct Sample
     double velocity;
     double error;
     double input_force;
+    double setpoint;
 };
 
 // Writes simulation state history to a CSV file for plotting

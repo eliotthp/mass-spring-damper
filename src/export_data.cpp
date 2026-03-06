@@ -27,10 +27,10 @@ int exportData(const vector<Sample> &sample_history, const string &output_file)
         return -1;
     }
 
-    outFile << "Time,Position,Velocity,Error,Input Force\n";
+    outFile << "Time,Position,Velocity,Error,Input Force,Setpoint\n";
     for (const auto &sample : sample_history)
     {
-        outFile << sample.time << "," << sample.position << "," << sample.velocity << "," << sample.error << "," << sample.input_force << "\n";
+        outFile << sample.time << "," << sample.position << "," << sample.velocity << "," << sample.error << "," << sample.input_force << "," << sample.setpoint << "\n";
     }
 
     return 0;

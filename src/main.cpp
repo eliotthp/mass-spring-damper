@@ -22,9 +22,9 @@ int main(int argc, char **argv)
     double k = 5.0;                             // Default spring constant (N/m).
     double c = 0.5;                             // Default damping coefficient (N*s/m).
     double sp = 1.0;                            // Default setpoint for control (m).
-    double kp = 1.0;                            // Default proportional gain for control (N/m).
-    double ki = 1.0;                            // Default integral gain for control (N*s/m).
-    double kd = 1.0;                            // Default derivative gain for control (N*s/m).
+    double kp = 20.0;                           // Default proportional gain for control (N/m).
+    double ki = 5.0;                           // Default integral gain for control (N*s/m).
+    double kd = 3.0;                            // Default derivative gain for control (N*s/m).
     string output_file = "simulation_data.csv"; // Default output file for CSV data.
     // Parse CLI args
     for (int i = 1; i < argc; ++i)
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     PIDController controller{kp, ki, kd};
 
     vector<Sample> sample_history;
-    sample_history.push_back({state.time, state.position, state.velocity, 0.0, 0.0});
+    sample_history.push_back({state.time, state.position, state.velocity, 0.0, 0.0, sp});
 
     double dt = 0.01;
     double error;
@@ -91,9 +91,9 @@ int main(int argc, char **argv)
         error = sp - state.position;
         error_sum += error * dt;
         input_force = controller.kp * error + controller.ki * error_sum + controller.kd * (-state.velocity); // PID control
-        if (input_force > 5.0)
+        if (input_force > 10.0)
         {
-            input_force = 5.0;
+            input_force = 10.0;
             error_sum -= error * dt;
         }
         else if (input_force < 0.0)
