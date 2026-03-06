@@ -1,5 +1,5 @@
 .venv/
 build/
-data/*.csv
+data/
 __pycache__/
 *.pyc

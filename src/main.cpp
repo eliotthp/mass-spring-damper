@@ -83,18 +83,33 @@ int main(int argc, char **argv)
     double error_sum = 0.0;
     double input_force;
 
-    // Run simulation for 20 seconds
-    for (int i = 0; i < 2000; ++i)
+    // Run simulation for 10 seconds
+    int num_steps = static_cast<int>(10.0 / dt);
+    auto start = chrono::high_resolution_clock::now();
+    for (int i = 0; i < num_steps; ++i)
     {
         error = sp - state.position;
         error_sum += error * dt;
         input_force = controller.kp * error + controller.ki * error_sum + controller.kd * (-state.velocity); // PID control
+        if (input_force > 5.0)
+        {
+            input_force = 5.0;
+            error_sum -= error * dt;
+        }
+        else if (input_force < 0.0)
+        {
+            input_force = 0.0;
+            error_sum -= error * dt;
+        }
         state = plant.step(state, input_force, dt);
         sample_history.push_back({state.time, state.position, state.velocity, error, input_force});
     }
+    auto end = chrono::high_resolution_clock::now();
 
     exportData(sample_history, output_file);
 
-    // Successful exit.
+    auto duration = chrono::duration<double>(end - start).count();
+    cout << "Simulation time: " << duration << " s\n";
+
     return 0;
 }

@@ -10,7 +10,7 @@ SIM_PATH = os.path.join(PROJECT_ROOT, "build", "sim")
 
 kps = [10, 20, 30]
 kds = [2, 5, 10]
-kis = [0, 1, 5]
+kis = [1, 5]
 
 filenames = []
 
