@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int exportData(const std::vector<State> &states_history, const std::string &output_file)
+int exportData(const vector<Sample> &sample_history, const string &output_file)
 {
     if (filesystem::exists("../data"))
     {
@@ -27,10 +27,10 @@ int exportData(const std::vector<State> &states_history, const std::string &outp
         return -1;
     }
 
-    outFile << "Time,Position,Velocity\n";
-    for (const auto &state : states_history)
+    outFile << "Time,Position,Velocity,Error,Input Force\n";
+    for (const auto &sample : sample_history)
     {
-        outFile << state.time << "," << state.position << "," << state.velocity << "\n";
+        outFile << sample.time << "," << sample.position << "," << sample.velocity << "," << sample.error << "," << sample.input_force << "\n";
     }
 
     return 0;

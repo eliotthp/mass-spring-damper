@@ -8,9 +8,9 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(SCRIPT_DIR, "..")
 SIM_PATH = os.path.join(PROJECT_ROOT, "build", "sim")
 
-kps = [5, 10, 20]
-kds = [0, 2, 5]
-kis = [0, 1]
+kps = [10, 20, 30]
+kds = [2, 5, 10]
+kis = [0, 1, 5]
 
 filenames = []
 

@@ -75,25 +75,25 @@ int main(int argc, char **argv)
     State state{0.0, x0, 0.0};
     PIDController controller{kp, ki, kd};
 
-    vector<State> states_history;
-    states_history.push_back(state);
+    vector<Sample> sample_history;
+    sample_history.push_back({state.time, state.position, state.velocity, 0.0, 0.0});
 
     double dt = 0.01;
     double error;
     double error_sum = 0.0;
     double input_force;
 
-    // Run simulation for 1000 integration steps.
-    for (int i = 0; i < 1000; ++i)
+    // Run simulation for 20 seconds
+    for (int i = 0; i < 2000; ++i)
     {
         error = sp - state.position;
         error_sum += error * dt;
         input_force = controller.kp * error + controller.ki * error_sum + controller.kd * (-state.velocity); // PID control
         state = plant.step(state, input_force, dt);
-        states_history.push_back(state);
+        sample_history.push_back({state.time, state.position, state.velocity, error, input_force});
     }
 
-    exportData(states_history, output_file);
+    exportData(sample_history, output_file);
 
     // Successful exit.
     return 0;
