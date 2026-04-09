@@ -10,16 +10,18 @@ using namespace std;
 
 int exportData(const vector<Sample> &sample_history, const string &output_file)
 {
-    if (filesystem::exists("../data"))
+    const filesystem::path data_dir = filesystem::path(PROJECT_ROOT_DIR) / "data";
+
+    if (filesystem::exists(data_dir))
     {
         cout << "Exporting " + output_file + "\n";
     }
-    else if (!filesystem::exists("../data"))
+    else
     {
         cout << "Creating data directory...\n";
-        filesystem::create_directory("../data");
+        filesystem::create_directories(data_dir);
     }
-    ofstream outFile("../data/" + output_file);
+    ofstream outFile(data_dir / output_file);
 
     if (!outFile.is_open())
     {

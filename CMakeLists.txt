@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(sim src/main.cpp src/plant.cpp src/export_data.cpp)
 target_include_directories(sim PRIVATE include)
+target_compile_definitions(sim PRIVATE PROJECT_ROOT_DIR="${CMAKE_SOURCE_DIR}")
 
 set(PYTHON_EXECUTABLE "${CMAKE_SOURCE_DIR}/.venv/bin/python")
 

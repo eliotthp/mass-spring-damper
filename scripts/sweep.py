@@ -9,7 +9,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(SCRIPT_DIR, "..")
 SIM_PATH = os.path.join(PROJECT_ROOT, "build", "sim")
 
-kps = np.linspace(5.0, 25.0, 21)
+kps = np.linspace(5.0, 15.0, 11)
 kds = np.linspace(5.0, 15.0, 11)
 kis = np.linspace(4.0, 6.0, 3)
 

@@ -3,3 +3,10 @@ build/
 data/
 __pycache__/
 *.pyc
+
+# Generated analysis outputs
+results.csv
+*.png
+
+# Local Python version manager pin
+.python-version
